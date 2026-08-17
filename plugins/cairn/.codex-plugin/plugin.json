@@ -1,0 +1,28 @@
+{
+  "name": "cairn",
+  "version": "1.2.0",
+  "description": "Gérez vos tâches TodoAI synchronisées depuis ChatGPT et Codex.",
+  "author": {
+    "name": "TodoAI"
+  },
+  "license": "MIT",
+  "keywords": ["todo", "tasks", "productivity", "local-first", "mcp"],
+  "interface": {
+    "displayName": "TodoAI",
+    "shortDescription": "Vos tâches synchronisées dans ChatGPT et Codex.",
+    "longDescription": "Consultez, créez, modifiez et terminez vos tâches TodoAI depuis l’application Linux, ChatGPT et Codex.",
+    "developerName": "TodoAI",
+    "category": "Productivity",
+    "capabilities": ["Read", "Write"],
+    "defaultPrompt": [
+      "Liste mes tâches TodoAI ouvertes.",
+      "Ajoute une tâche dans mon espace Travail.",
+      "Quelles tâches arrivent à échéance ?"
+    ],
+    "brandColor": "#5B5CE2",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/icon.png",
+    "screenshots": ["./assets/cairn-list.png", "./assets/cairn-kanban.png"]
+  },
+  "mcpServers": "./.mcp.json"
+}

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "todoai": {
+      "type": "http",
+      "url": "https://zoyxothgwbpgkjnjunis.supabase.co/functions/v1/todoai-mcp"
+    }
+  }
+}

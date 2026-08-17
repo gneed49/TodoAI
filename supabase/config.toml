@@ -1,0 +1,7 @@
+project_id = "zoyxothgwbpgkjnjunis"
+
+[functions.todoai-mcp]
+verify_jwt = false
+
+[functions.todoai-auth]
+verify_jwt = false

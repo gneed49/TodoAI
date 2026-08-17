@@ -1,0 +1,46 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "TodoAI",
+  "version": "0.3.0",
+  "identifier": "app.cairn.todo",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "TodoAI",
+        "width": 1280,
+        "height": 800,
+        "minWidth": 760,
+        "minHeight": 560,
+        "center": true,
+        "resizable": true
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data:; connect-src 'self' ipc: http://ipc.localhost https://zoyxothgwbpgkjnjunis.supabase.co"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["deb", "appimage"],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.png"
+    ],
+    "category": "Productivity",
+    "shortDescription": "TodoAI, gestionnaire de tâches rapide et synchronisé",
+    "longDescription": "TodoAI synchronise vos tâches avec Supabase et les rend accessibles à ChatGPT via un serveur MCP sécurisé.",
+    "linux": {
+      "deb": {
+        "depends": []
+      }
+    }
+  }
+}

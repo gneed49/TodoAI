@@ -1,0 +1,16 @@
+node_modules/
+dist/
+src-tauri/target/
+.agents/
+.codex/
+.env
+.env.*
+!.env.example
+*.db
+*.db-shm
+*.db-wal
+*.AppImage
+*.deb
+.DS_Store
+playwright-report/
+test-results/
