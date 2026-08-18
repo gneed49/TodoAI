@@ -1,5 +1,23 @@
 project_id = "zoyxothgwbpgkjnjunis"
 
+[auth]
+site_url = "https://gneed49.github.io/todoai-auth"
+additional_redirect_urls = ["https://gneed49.github.io/todoai-auth/oauth/consent/"]
+
+[auth.oauth_server]
+enabled = true
+authorization_url_path = "/oauth/consent/"
+allow_dynamic_registration = true
+
+[auth.email]
+enable_confirmations = true
+max_frequency = "1m0s"
+otp_length = 8
+
+[auth.mfa.totp]
+enroll_enabled = true
+verify_enabled = true
+
 [functions.todoai-mcp]
 verify_jwt = false
 

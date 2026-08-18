@@ -6,6 +6,7 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const PUBLISHABLE_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
 const MCP_URL = `${SUPABASE_URL}/functions/v1/todoai-mcp`;
 const AUTH_SERVER = `${SUPABASE_URL}/auth/v1`;
+const oauthSecurity = [{ type: "oauth2", scopes: ["openid", "email"] }] as const;
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -73,6 +74,7 @@ const tools = [
     description: "Use this when the user wants to see their TodoAI workspaces or when a workspace ID is needed for another operation.",
     inputSchema: { type: "object", properties: {}, additionalProperties: false },
     outputSchema: { type: "object", properties: { workspaces: { type: "array", items: workspaceSchema } }, required: ["workspaces"] },
+    securitySchemes: oauthSecurity,
     annotations: { readOnlyHint: true, destructiveHint: false, openWorldHint: false },
   },
   {
@@ -80,6 +82,7 @@ const tools = [
     description: "Use this when the user wants to create a new workspace for grouping their TodoAI tasks.",
     inputSchema: { type: "object", properties: { name: { type: "string", minLength: 1, maxLength: 80 }, color: { type: "string", pattern: "^#[0-9A-Fa-f]{6}$", default: "#6366f1" } }, required: ["name"], additionalProperties: false },
     outputSchema: { type: "object", properties: { workspace: workspaceSchema }, required: ["workspace"] },
+    securitySchemes: oauthSecurity,
     annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false, idempotentHint: false },
   },
   {
@@ -87,6 +90,7 @@ const tools = [
     description: "Use this when the user wants to find, review, summarize, or count their TodoAI tasks. Filters are optional and can be combined.",
     inputSchema: { type: "object", properties: { workspace_id: { type: "string" }, status: { type: "string", enum: ["todo", "doing", "done"] }, query: { type: "string", maxLength: 200 }, include_completed: { type: "boolean", default: true } }, additionalProperties: false },
     outputSchema: { type: "object", properties: { todos: { type: "array", items: todoSchema } }, required: ["todos"] },
+    securitySchemes: oauthSecurity,
     annotations: { readOnlyHint: true, destructiveHint: false, openWorldHint: false },
   },
   {
@@ -94,6 +98,7 @@ const tools = [
     description: "Use this when the user wants the current details of one TodoAI task or before an update that depends on its current values.",
     inputSchema: { type: "object", properties: { id: { type: "string", format: "uuid" } }, required: ["id"], additionalProperties: false },
     outputSchema: { type: "object", properties: { todo: todoSchema }, required: ["todo"] },
+    securitySchemes: oauthSecurity,
     annotations: { readOnlyHint: true, destructiveHint: false, openWorldHint: false },
   },
   {
@@ -101,6 +106,7 @@ const tools = [
     description: "Use this when the user wants to add one actionable task to a known TodoAI workspace.",
     inputSchema: { type: "object", properties: { workspace_id: { type: "string" }, title: { type: "string", minLength: 1, maxLength: 240 }, notes: { type: "string", maxLength: 10000 }, status: { type: "string", enum: ["todo", "doing", "done"], default: "todo" }, priority: { type: "string", enum: ["none", "low", "medium", "high"], default: "none" }, due_date: { type: ["string", "null"], format: "date" } }, required: ["workspace_id", "title"], additionalProperties: false },
     outputSchema: { type: "object", properties: { todo: todoSchema }, required: ["todo"] },
+    securitySchemes: oauthSecurity,
     annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false, idempotentHint: false },
   },
   {
@@ -108,6 +114,7 @@ const tools = [
     description: "Use this when the user wants to edit, complete, reopen, move, prioritize, or reschedule an existing TodoAI task. Send only fields that should change.",
     inputSchema: { type: "object", properties: { id: { type: "string", format: "uuid" }, workspace_id: { type: "string" }, title: { type: "string", minLength: 1, maxLength: 240 }, notes: { type: "string", maxLength: 10000 }, status: { type: "string", enum: ["todo", "doing", "done"] }, priority: { type: "string", enum: ["none", "low", "medium", "high"] }, due_date: { type: ["string", "null"], format: "date" }, position: { type: "integer", minimum: 0 } }, required: ["id"], additionalProperties: false },
     outputSchema: { type: "object", properties: { todo: todoSchema }, required: ["todo"] },
+    securitySchemes: oauthSecurity,
     annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false, idempotentHint: true },
   },
   {
@@ -115,6 +122,7 @@ const tools = [
     description: "Use this only when the user explicitly wants to permanently delete one existing TodoAI task.",
     inputSchema: { type: "object", properties: { id: { type: "string", format: "uuid" } }, required: ["id"], additionalProperties: false },
     outputSchema: { type: "object", properties: { deleted: { type: "boolean" }, id: { type: "string" } }, required: ["deleted", "id"] },
+    securitySchemes: oauthSecurity,
     annotations: { readOnlyHint: false, destructiveHint: true, openWorldHint: false, idempotentHint: true },
   },
 ];
@@ -207,7 +215,12 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders });
   const pathname = new URL(req.url).pathname;
   if (pathname.endsWith("/.well-known/oauth-protected-resource")) {
-    return json({ resource: MCP_URL, authorization_servers: [AUTH_SERVER], scopes_supported: ["openid", "email", "profile"] });
+    return json({
+      resource: MCP_URL,
+      authorization_servers: [AUTH_SERVER],
+      scopes_supported: ["openid", "email"],
+      resource_documentation: "https://github.com/gneed49/TodoAI#connexion-chatgpt",
+    });
   }
   if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405, { Allow: "POST" });
 

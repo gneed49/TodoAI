@@ -54,12 +54,20 @@ Le serveur expose Streamable HTTP, vérifie le jeton Supabase de l’utilisateur
 
 ## Connexion ChatGPT
 
-ChatGPT exige OAuth 2.1 pour une connexion privée qui peut modifier les données. Le dossier `auth-site/` contient la page d’autorisation prête à publier gratuitement sur Vercel. Après publication :
+ChatGPT utilise OAuth 2.1 pour accéder aux données privées et aux actions d’écriture. La page de connexion et de consentement est publiée sur GitHub Pages :
 
-1. définir son URL comme URL du site dans Supabase Auth ;
-2. définir `/oauth/consent` comme chemin d’autorisation ;
-3. activer le serveur OAuth et l’enregistrement dynamique des clients ;
-4. ajouter l’URL MCP ci-dessus dans les connecteurs ChatGPT en mode développeur.
+```text
+https://gneed49.github.io/todoai-auth/oauth/consent/
+```
+
+Configuration Supabase Auth associée :
+
+1. URL du site : `https://gneed49.github.io/todoai-auth` ;
+2. chemin d’autorisation : `/oauth/consent/` ;
+3. serveur OAuth 2.1 et enregistrement dynamique des clients activés ;
+4. URL MCP à ajouter dans ChatGPT : `https://zoyxothgwbpgkjnjunis.supabase.co/functions/v1/todoai-mcp`.
+
+Le code source de la page reste dans `auth-site/`. Son dépôt de publication est public sur <https://github.com/gneed49/todoai-auth>.
 
 Le paquet de plugin se trouve dans `plugins/cairn` ; son identifiant historique est conservé pour la compatibilité, mais son nom visible et sa connexion utilisent TodoAI.
 
