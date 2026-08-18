@@ -1,6 +1,6 @@
 # TodoAI
 
-TodoAI est une application de tâches Linux rapide, synchronisée et privée. L’interface utilise Tauri 2, React, TypeScript et shadcn/ui. Les données sont stockées dans Supabase Postgres et protégées par des règles d’accès propres à chaque compte.
+TodoAI est une application de tâches Linux et Android rapide, synchronisée et privée. L’interface utilise Tauri 2, React, TypeScript et shadcn/ui. Les données sont stockées dans Supabase Postgres et protégées par des règles d’accès propres à chaque compte.
 
 ## Fonctionnalités
 
@@ -8,9 +8,9 @@ TodoAI est une application de tâches Linux rapide, synchronisée et privée. L�
 - Vues Liste et Kanban avec glisser-déposer
 - Thèmes clair et sombre
 - Synchronisation Supabase entre l’application et le MCP
+- Interface mobile avec zones sûres, panneaux tactiles et Kanban horizontal
 - MCP distant avec 7 outils CRUD, déployé en Edge Function
 - Authentification par compte Supabase
-- Import unique de l’ancienne base SQLite au premier compte connecté
 
 ## Lancer et construire
 
@@ -26,8 +26,20 @@ La configuration publique Supabase est déjà fournie dans l’application. `.en
 
 Paquets générés :
 
-- `src-tauri/target/release/bundle/appimage/TodoAI_0.3.0_amd64.AppImage` pour Fedora et les distributions compatibles AppImage
-- `src-tauri/target/release/bundle/deb/TodoAI_0.3.0_amd64.deb` pour Debian et Ubuntu
+- `src-tauri/target/release/bundle/appimage/TodoAI_0.4.0_amd64.AppImage` pour Fedora et les distributions compatibles AppImage
+- `src-tauri/target/release/bundle/deb/TodoAI_0.4.0_amd64.deb` pour Debian et Ubuntu
+
+### Android
+
+Prérequis supplémentaires : Android SDK 36, Android NDK 28 et les quatre cibles Rust Android.
+
+```bash
+rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
+npm run android:init
+npm run android:build -- --debug --target aarch64 --ci
+```
+
+L’APK ARM64 optimisé et signé est produit dans `src-tauri/gen/android/app/build/outputs/apk/universal/release/TodoAI-0.4.0-android-arm64.apk`. Copiez-le sur le téléphone, ouvrez-le, puis autorisez ponctuellement l’installation depuis cette source si Android le demande. L’application utilise le même compte Supabase et retrouve automatiquement les mêmes espaces et tâches que la version Linux et le MCP ChatGPT.
 
 ## Base Supabase
 
@@ -36,9 +48,6 @@ Le schéma reproductible se trouve dans `supabase/migrations/20260817140000_crea
 - `public.workspaces` et `public.todos`
 - les index et contrôles de validité
 - les politiques RLS limitant chaque requête à son propriétaire
-- un sas privé et consommable une seule fois pour importer l’ancienne base locale
-
-La base SQLite d’origine n’est pas supprimée et reste une sauvegarde locale.
 
 ## MCP distant
 

@@ -30,11 +30,13 @@ export function TodoRow({ todo, onToggle, onOpen }: TodoRowProps) {
         onCheckedChange={() => onToggle(todo)}
       />
       <button className="todo-title" type="button" onClick={() => onOpen(todo)}>{todo.title}</button>
-      <span className={`priority priority--${todo.priority}`}>
-        {todo.priority !== "none" ? <><Flag size={13} fill="currentColor" />{priorityLabels[todo.priority]}</> : null}
-      </span>
-      <span className={`todo-due ${todo.due_date && todo.due_date <= new Date().toISOString().slice(0, 10) && todo.status !== "done" ? "due-now" : ""}`}>
-        {todo.due_date ? <><Calendar size={14} />{formatDate(todo.due_date)}</> : null}
+      <span className="todo-meta">
+        <span className={`priority priority--${todo.priority}`}>
+          {todo.priority !== "none" ? <><Flag size={13} fill="currentColor" />{priorityLabels[todo.priority]}</> : null}
+        </span>
+        <span className={`todo-due ${todo.due_date && todo.due_date <= new Date().toISOString().slice(0, 10) && todo.status !== "done" ? "due-now" : ""}`}>
+          {todo.due_date ? <><Calendar size={14} />{formatDate(todo.due_date)}</> : null}
+        </span>
       </span>
       <button className="row-menu" type="button" aria-label={`Modifier ${todo.title}`} onClick={() => onOpen(todo)}>
         <MoreHorizontal size={18} />

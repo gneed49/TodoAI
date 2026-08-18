@@ -61,7 +61,6 @@ export default function App() {
     const load = async (showLoading = false) => {
       if (showLoading) setLoading(true);
       try {
-        await api.claimLegacyData();
         let next = await api.getAppData();
         if (next.workspaces.length === 0) {
           await api.ensureDefaultWorkspaces();
@@ -206,7 +205,7 @@ export default function App() {
           onDueChange={setDue}
           onClear={() => { setStatus("all"); setPriority("all"); setDue("all"); setSearch(""); }}
         />
-        <div className="content-view">
+        <div className={`content-view content-view--${view}`}>
           {view === "list" ? (
             <ListView
               todos={visibleTodos}

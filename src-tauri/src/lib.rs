@@ -1,11 +1,17 @@
+#[cfg(not(mobile))]
 mod db;
+#[cfg(not(mobile))]
 mod mcp;
+#[cfg(not(mobile))]
 mod models;
 
+#[cfg(not(mobile))]
 use std::{net::SocketAddr, path::PathBuf, sync::Arc};
 
+#[cfg(not(mobile))]
 use db::Database;
 
+#[cfg(not(mobile))]
 pub fn default_database_path() -> PathBuf {
     if let Ok(directory) = std::env::var("CAIRN_DATA_DIR") {
         return PathBuf::from(directory).join("cairn.db");
@@ -16,6 +22,7 @@ pub fn default_database_path() -> PathBuf {
         .join("cairn.db")
 }
 
+#[cfg(not(mobile))]
 pub async fn run_standalone_mcp() -> anyhow::Result<()> {
     let _ = tracing_subscriber::fmt()
         .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())

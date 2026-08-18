@@ -13,5 +13,3 @@ export const supabase = createClient<Database>(supabaseUrl, supabasePublishableK
     storageKey: "todoai-auth-v1",
   },
 });
-
-export const legacyMigrationToken = import.meta.env.VITE_TODOAI_MIGRATION_TOKEN as string | undefined;

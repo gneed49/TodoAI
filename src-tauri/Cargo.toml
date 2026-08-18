@@ -1,6 +1,6 @@
 [package]
 name = "cairn"
-version = "0.3.0"
+version = "0.4.0"
 description = "TodoAI, a synchronized todo app with a remote MCP server"
 authors = ["TodoAI"]
 edition = "2021"
@@ -22,14 +22,16 @@ path = "src/bin/cairn-mcp.rs"
 tauri-build = { version = "2", features = [] }
 
 [dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tauri = { version = "2", features = [] }
+
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
 anyhow = "1"
 axum = "0.8"
 chrono = { version = "0.4", features = ["serde"] }
 dirs = "6"
 rusqlite = { version = "0.32", features = ["bundled"] }
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
-tauri = { version = "2", features = [] }
 tokio = { version = "1", features = ["full"] }
 tower-http = { version = "0.6", features = ["cors", "trace"] }
 tracing = "0.1"

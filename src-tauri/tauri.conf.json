@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "TodoAI",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "identifier": "app.cairn.todo",
   "build": {
     "beforeDevCommand": "npm run dev",
@@ -37,6 +37,9 @@
     "category": "Productivity",
     "shortDescription": "TodoAI, gestionnaire de tâches rapide et synchronisé",
     "longDescription": "TodoAI synchronise vos tâches avec Supabase et les rend accessibles à ChatGPT via un serveur MCP sécurisé.",
+    "android": {
+      "minSdkVersion": 24
+    },
     "linux": {
       "deb": {
         "depends": []

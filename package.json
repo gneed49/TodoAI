@@ -1,6 +1,6 @@
 {
   "name": "todoai",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,6 +10,9 @@
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build",
+    "android:init": "tauri android init",
+    "android:dev": "tauri android dev",
+    "android:build": "tauri android build --apk",
     "check": "tsc --noEmit && cargo check --manifest-path src-tauri/Cargo.toml",
     "test:mcp": "node scripts/test-mcp.mjs"
   },

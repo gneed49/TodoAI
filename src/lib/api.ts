@@ -5,7 +5,7 @@ import type {
   UpdateTodoInput,
   Workspace,
 } from "../types";
-import { legacyMigrationToken, supabase } from "./supabase";
+import { supabase } from "./supabase";
 
 const workspaceColumns = "id,name,color,created_at";
 const todoColumns = "id,workspace_id,title,notes,status,priority,due_date,position,created_at,updated_at";
@@ -26,17 +26,6 @@ export const api = {
       workspaces: (workspaceResult.data ?? []) as Workspace[],
       todos: (todoResult.data ?? []) as Todo[],
     };
-  },
-
-  async claimLegacyData(): Promise<boolean> {
-    if (!legacyMigrationToken) return false;
-    const marker = "todoai-legacy-import-v1";
-    if (localStorage.getItem(marker)) return false;
-    const { error } = await supabase.rpc("claim_todoai_legacy_import", {
-      migration_token: legacyMigrationToken,
-    });
-    if (!error) localStorage.setItem(marker, "claimed");
-    return !error;
   },
 
   async ensureDefaultWorkspaces(): Promise<void> {
